@@ -129,7 +129,6 @@ class RecognizeButton(ButtonBehavior, Image):
     def init_fb_manager(self):
         self.fbm = FB_Manager(preview=  self.preview, message=self.message)
         self.absent_table = self.fbm.table
-        print(self.absent_table.iloc[7:13,:])
 
     def on_press(self):
         frame = np.array(self.preview.frame)
