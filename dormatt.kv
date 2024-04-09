@@ -1,0 +1,39 @@
+<MainScreen>:
+    CameraPreview:
+        id: camera_preview
+        size: root.size
+    Image:
+        source:"./image/faceline.png"
+        center:root.width/2, root.height/2+100
+        allow_stretch:True
+        keep_ratio:False
+        size_hint:None, None
+        width: root.width*0.8
+        height: self.width * 1.2
+
+    Label:
+        id: message_label
+        text:""
+        font_name:"./NotoSansJP-Medium.ttf"
+        center:root.width/2, root.height - 70
+        font_size:44
+        color:(1,1,1,1)
+        halign:"center"
+
+    RecognizeButton:
+        id:recognize_button
+        message: message_label
+        preview: camera_preview
+        source:"./image/recognize.png"
+        center:root.width/2, self.height * 2
+        allow_stretch:True
+        keep_ratio:False
+        size_hint:None, None
+        size: root.width*0.8, 100
+        Label:
+            text:"RollColl"
+            font_size:60
+            color:(1,1,1,1)
+            center: self.parent.center
+            halign:"center"
+            
