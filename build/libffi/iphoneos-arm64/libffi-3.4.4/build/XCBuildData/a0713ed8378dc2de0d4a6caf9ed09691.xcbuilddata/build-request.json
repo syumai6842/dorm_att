@@ -1,0 +1,45 @@
+{
+  "buildCommand" : {
+    "command" : "build",
+    "skipDependencies" : false,
+    "style" : "buildAndRun"
+  },
+  "configuredTargets" : [
+    {
+      "guid" : "897893326afe778718f08201cc33c4889c56d297cf62fea27596189ba5ddb439"
+    }
+  ],
+  "containerPath" : "/Users/kanayanaokyou/dorm_att/build/libffi/iphoneos-arm64/libffi-3.4.4/libffi.xcodeproj",
+  "continueBuildingAfterErrors" : false,
+  "dependencyScope" : "workspace",
+  "enableIndexBuildArena" : false,
+  "hideShellScriptEnvironment" : false,
+  "parameters" : {
+    "action" : "build",
+    "configurationName" : "Release",
+    "overrides" : {
+      "commandLine" : {
+        "table" : {
+          "ARCHS" : "arm64",
+          "IDEBuildOperationMaxNumberOfConcurrentCompileTasks" : "8",
+          "ONLY_ACTIVE_ARCH" : "NO",
+          "SDKROOT" : "iphoneos17.4"
+        }
+      },
+      "synthesized" : {
+        "table" : {
+          "ACTION" : "build",
+          "COLOR_DIAGNOSTICS" : "YES",
+          "diagnostic_message_length" : "80",
+          "ENABLE_PREVIEWS" : "NO",
+          "ENABLE_XOJIT_PREVIEWS" : "NO"
+        }
+      }
+    }
+  },
+  "showNonLoggedProgress" : true,
+  "useDryRun" : false,
+  "useImplicitDependencies" : false,
+  "useLegacyBuildLocations" : false,
+  "useParallelTargets" : false
+}

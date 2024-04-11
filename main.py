@@ -47,7 +47,7 @@ class FB_Manager():
         self.face_recognizer = cv2.FaceRecognizerSF.create("./model/face_recognizer_fast.onnx", "")
         self.preview:CameraPreview = preview
         self.message:Label = message
-        
+
 
         scope = ['https://www.googleapis.com/auth/spreadsheets','https://www.googleapis.com/auth/drive']
         self.credentials = Credentials.from_service_account_file("./secrets/credentials.json", scopes=scope)
@@ -122,8 +122,6 @@ class RecognizeButton(ButtonBehavior, Image):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        schedule.every().saturday.at('12:00').do(self.send_result)
-        schedule.every().sunday.at('12:00').do(self.send_result)
         schedule.every().day.at('05:00').do(self.reset)
 
     def init_fb_manager(self):
@@ -139,8 +137,7 @@ class RecognizeButton(ButtonBehavior, Image):
             name = self.fbm.table.loc[self.fbm.table["number"] == int(num),"name"].values[0]
             if self.absent_table["number"].isin([int(num)]).any():
                 self.absent_table = self.absent_table.drop(self.absent_table[self.absent_table["number"] == int(num)].index, axis=0)
-                print(self.absent_table)
-                self.message.text = f"{num}-{name}"
+                
             else:
                 self.message.text = f"{num}-{name} (点呼済)"
                 print("poijfpaoisdnpaoij")
@@ -155,6 +152,7 @@ class RecognizeButton(ButtonBehavior, Image):
 
     def reset(self):
         self.absent_table = self.fbm.table
+        self.new_sheet = self.fbm.workbook.add_worksheet(f"点呼結果-{datetime.date.today()}",300,5)
         self.message.text = ""
 
         
