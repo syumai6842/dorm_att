@@ -125,11 +125,9 @@ class RecognizeButton(ButtonBehavior, Image):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         
-        schedule.every().day.at('05:00').do(self.reset)
 
     def init_fb_manager(self):
         self.fbm = FB_Manager(preview=  self.preview, message=self.message)
-        self.absent_table = self.fbm.table
         self.reset()
 
     def on_press(self):
@@ -139,49 +137,26 @@ class RecognizeButton(ButtonBehavior, Image):
         if recognized_person is not False:
             num = recognized_person
             name = self.fbm.table.loc[self.fbm.table["number"] == int(num),"name"].values[0]
-            time = str(datetime.datetime.now().replace(microsecond=0))
-
-            if self.absent_table["number"].isin([int(num)]).any():
-                self.absent_table = self.absent_table.drop(self.absent_table[self.absent_table["number"] == int(num)].index, axis=0)
-                self.message.text = f"{num}-{name}"
-
-                sheet = self.fbm.workbook.worksheet("realtime")
-                sheet.append_row([num,name,time])
-
-                
-                sheet = self.new_sheet #今日のシートに入力
-                sheet.clear()
-
-                #sheet.append_row([name])
-                for i in range(len(self.absent_table.index)):
-                    sheet.append_row([str(self.absent_table.iloc[i,1])]) 
-                #ここでAPIの制限に引っ掛かります。
-
-                
-                
-
-            else:
-                self.message.text = f"{num}-{name} (点呼済)"
-                print("poijfpaoisdnpaoij")
-
-                sheet = self.new_sheet
-                sheet.clear()
-                sheet.append_row([name])
-                
+            self.send_result(num,name)
+            self.message.text = f"{name} 点呼済み"
 
 
         else:
             self.message.text = "誰も検知しませんでした"
 
-    def send_result(self):
-        result_ws:gspread.worksheet.Worksheet = self.fbm.workbook.add_worksheet(f"{datetime.datetime.now()}")
-        gspread_dataframe.set_with_dataframe(worksheet=result_ws, dataframe=self.absent_table)
-        self.message.text = "点呼の結果を送信しました"
+    def send_result(self,num:int,name:str):
+        sheet_names = [sheet.title for sheet in self.fbm.workbook.worksheets()]
+        sheet_name = datetime.datetime.today().strftime('%Y-%m-%d')
+        if sheet_name not in sheet_names:
+            self.fbm.workbook.add_worksheet(title=sheet_name,rows=2,cols=1)
+        worksheet = self.fbm.workbook.worksheet(sheet_name)
+        worksheet.add_rows(1)
+        row_count = worksheet.row_count
+        worksheet.update_cell(row_count - 1,1,num)
+        worksheet.update_cell(row_count - 1,2,name)
 
     def reset(self):
-        self.absent_table = self.fbm.table
-        self.new_sheet = self.fbm.workbook.add_worksheet(f"点呼結果-{datetime.date.today()}",300,5)
-        self.message.text = ""
+        pass
 
 
 
