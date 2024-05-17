@@ -19,7 +19,6 @@ from kivy.graphics.texture import Texture
 from kivy.uix.widget import Widget
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.properties import ObjectProperty
-import gspread
 from google.oauth2.service_account import Credentials
 
 class CameraPreview(Image):
